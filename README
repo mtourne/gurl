@@ -11,6 +11,11 @@ Go get the comand `go` at : http://www.golang.org/
 
 (ubuntu 12.04: apt-get install golang golang-go)
 
+then :
+
+    ./install.sh
+
+
 
 Usage
 -----
