@@ -1,0 +1,31 @@
+gURL - go URL
+-------------
+
+it's like cURL but for SPDY in Go!
+
+
+Install
+-------
+
+Go get the comand `go` at : http://www.golang.org/
+
+(ubuntu 12.04: apt-get install golang golang-go)
+
+
+Usage
+-----
+
+   gurl -h
+
+
+* curl :
+
+   gurl -url 'https://www.google.com' -v 1
+
+
+* bench :
+
+100 requests total, 10 parallel
+
+   gurl -url 'https://www.google.com' -n 100 -c 10
+
