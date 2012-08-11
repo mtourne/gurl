@@ -32,23 +32,23 @@ func connect(start, done chan bool, url string) {
 
 		defer r.Body.Close()
 
-		body, err := ioutil.ReadAll(r.Body)
-
-		if err != nil {
-			log.Fatal(err)
-			done <- true
-			return
-		}
-
 		// Print the body
 		if VERBOSE > 0 {
+
+			body, err := ioutil.ReadAll(r.Body)
+
+			if err != nil {
+				log.Fatal(err)
+				done <- true
+				return
+			}
+
 			fmt.Printf(string(body))
 		}
 
 		done <- true
 	}
 }
-
 
 // Goroutine to keep consuming <-done
 func requests_done(done, end chan bool, n, c int) {
@@ -58,7 +58,7 @@ func requests_done(done, end chan bool, n, c int) {
 
 	for i := 0; i < n; i++ {
 		<-done
-		if i % c == 0 && i != 0 {
+		if i%c == 0 && i != 0 {
 			now := time.Now().UnixNano()
 			interval := (now - last_now) / 1e6
 			fmt.Printf("%d reqs done. + %d msecs\n", i, interval)
@@ -66,14 +66,14 @@ func requests_done(done, end chan bool, n, c int) {
 		}
 	}
 
-	fmt.Printf("%d reqs done.\n", n)
+	interval := (time.Now().UnixNano() - last_now) / 1e6
+	fmt.Printf("%d reqs done. + %d msecs\n", n, interval)
 
-	total_time := (time.Now().UnixNano() - start_time) / 1e6
-	fmt.Printf("\ntotal time: %d msecs\n", total_time)
+	total_time := time.Now().UnixNano() - start_time
+	fmt.Printf("\ntotal time: %f secs\n", float64(total_time)/1e9)
 
 	end <- true
 }
-
 
 func main() {
 
@@ -96,7 +96,6 @@ func main() {
 
 	start := make(chan bool, *n)
 	done := make(chan bool, *n)
-
 
 	end := make(chan bool, *n)
 
